@@ -4,6 +4,8 @@
 :END:
 Automated mirror for [[https://www.magicearth.com][Magic Earth (maps)]] Android APKs, verified against the official ROUTE 66 signature. Designed for use with [[https://github.com][Obtainium]].
 
+New releases are checked for nightly at midnight UTC.
+
 ** How to use with Obtainium
 :PROPERTIES:
 :CUSTOM_ID: how-to-use-with-obtainium
