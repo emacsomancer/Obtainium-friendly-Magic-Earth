@@ -1,0 +1,23 @@
+* Magic Earth (Obtainium Mirror)
+:PROPERTIES:
+:CUSTOM_ID: magic-earth-obtainium-mirror
+:END:
+Automated mirror for *Magic Earth* APKs, verified against the official ROUTE 66 signature. Designed for use with [[https://github.com][Obtainium]].
+
+** How to use with Obtainium
+:PROPERTIES:
+:CUSTOM_ID: how-to-use-with-obtainium
+:END:
+1. Copy this URL: =https://github.com/emacsomancer/Obtainium-friendly-Magic-Earth=
+2. Open *Obtainium* and click *Add App*.
+3. Paste the above URL.
+4. (Optional) Click the *Pencil icon* (Override Source Settings):
+   - Set *Version Detection* to: =GitHub Release Tag=.
+5. Click *Add*.
+
+** Security
+:PROPERTIES:
+:CUSTOM_ID: security
+:END:
+Every APK in this repository is automatically verified using =apksigner= against the official Magic Earth SHA-256 certificate fingerprint before being published.
+
