@@ -15,8 +15,9 @@ New releases are checked for nightly at midnight UTC.
 1. Copy this URL: =https://github.com/emacsomancer/Obtainium-friendly-Magic-Earth=
 2. Open *Obtainium* and click *Add App*.
 3. Paste the above URL.
-4. (maybe) - enable "Verify the 'latest' tag".
-5. Click *Add*.
+4. Click *Add*.
+
+It's maybe a bit slow to add the first time.
 
 ** Method
 :PROPERTIES:
