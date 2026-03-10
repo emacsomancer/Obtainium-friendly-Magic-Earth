@@ -2,7 +2,7 @@
 :PROPERTIES:
 :CUSTOM_ID: magic-earth-obtainium-mirror
 :END:
-Automated mirror for *Magic Earth* APKs, verified against the official ROUTE 66 signature. Designed for use with [[https://github.com][Obtainium]].
+Automated mirror for [[https://www.magicearth.com/download][*Magic Earth* Android APKs]], verified against the official ROUTE 66 signature. Designed for use with [[https://github.com][Obtainium]].
 
 ** How to use with Obtainium
 :PROPERTIES:
