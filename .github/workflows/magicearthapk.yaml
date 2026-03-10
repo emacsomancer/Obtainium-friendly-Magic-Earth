@@ -45,6 +45,4 @@ jobs:
           VERSION: ${{ steps.updater.outputs.version }} 
         # Using the GitHub CLI (gh) to create the release and upload APKs individually
         run: |
-          gh release create "$VERSION" ./apks/*.apk \
-            --title "Magic Earth v$VERSION" \
-            --notes "Mirrored from https://www.magicearth.com for use with Obtainium. Verified official ROUTE 66 signature."
+          gh release create "$VERSION" ./apks/*.apk --title "Magic Earth v$VERSION" --notes "Mirrored from https://www.magicearth.com for use with Obtainium. Verified official ROUTE 66 signature."
