@@ -1,0 +1,60 @@
+name: Magic Earth APK Release
+
+on:
+  schedule:
+    # Runs once a day at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # env:
+      # ANDROID_SDK_ROOT: ${{ github.workspace }}/android
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y unzip curl python3-pip
+
+      - name: Install python dependencies
+        run: pip install requests beautifulsoup4
+        
+      - name: Get Latest Version
+        id: check_version
+        run: |
+         # 'tail -n 1' ensures we only get the very last line (the raw version)
+         # 'tr -d "\r"' removes any hidden Windows-style line endings
+         RAW_VER=$(python3 scripts/get_latest_version.py | tail -n 1 | tr -d "\r")
+    
+         echo "VERSION=$RAW_VER" >> $GITHUB_ENV
+         echo "version=$RAW_VER" >> $GITHUB_OUTPUT
+
+
+      - name: Check and Download APKs
+        if: steps.check_version.outputs.new_version_found == 'true' 
+        id: download_step  # <--- MUST match the 'if' below
+        run: python3 scripts/download_apks.py
+
+      - name: Setup Android SDK
+        if: steps.download_step.outputs.new_version_found == 'true'
+        uses: android-actions/setup-android@v3
+
+      - name: Verify Signatures
+        # Only runs if the Python script found a new version
+        if: steps.download_step.outputs.new_version_found == 'true'
+        run: |
+          # Use the version from Python output if needed
+          export VERSION=${{ steps.download_step.outputs.version }}
+          chmod +x scripts/verify_apks.sh
+          ./scripts/verify_apks.sh "${{ secrets.MAGICEARTH_CERT_SHA256 }}" "apks/"
+
+      - name: Create Release
+        if: steps.download_step.outputs.new_version_found == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.download_step.outputs.version }}
+          files: apks/*.apk
