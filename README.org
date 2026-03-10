@@ -11,8 +11,7 @@ Automated mirror for [[https://www.magicearth.com/download][*Magic Earth* Androi
 1. Copy this URL: =https://github.com/emacsomancer/Obtainium-friendly-Magic-Earth=
 2. Open *Obtainium* and click *Add App*.
 3. Paste the above URL.
-4. (Optional) Click the *Pencil icon* (Override Source Settings):
-   - Set *Version Detection* to: =GitHub Release Tag=.
+4. (maybe) - enable "Verify the 'lastest' tag".
 5. Click *Add*.
 
 ** Security
