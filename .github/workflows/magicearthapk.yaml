@@ -1,60 +1,50 @@
-name: Magic Earth APK Release
+name: Sync Magic Earth APKs 
 
-on:
-  schedule:
-    # Runs once a day at 00:00 UTC
-    - cron: '0 0 * * *'
-  workflow_dispatch:
+on: 
+  schedule: 
+    - cron: '0 0 * * *' # Runs daily at midnight UTC
+  workflow_dispatch:      # Allows manual trigger
 
 permissions:
-  contents: write
-  
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    # env:
-      # ANDROID_SDK_ROOT: ${{ github.workspace }}/android
-    steps:
-      - uses: actions/checkout@v3
+  contents: write         # Required to create releases and upload APKs
 
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y unzip curl python3-pip
-
-      - name: Install python dependencies
-        run: pip install requests beautifulsoup4
-        
-      - name: Get Latest Version
-        id: check_version
-        run: |
-         # 'tail -n 1' ensures we only get the very last line (the raw version)
-         # 'tr -d "\r"' removes any hidden Windows-style line endings
-         RAW_VER=$(python3 scripts/get_latest_version.py | tail -n 1 | tr -d "\r")
+jobs: 
+  check-and-deploy: 
+    runs-on: ubuntu-latest 
     
-         echo "VERSION=$RAW_VER" >> $GITHUB_ENV
-         echo "version=$RAW_VER" >> $GITHUB_OUTPUT
+    steps: 
+      - name: Checkout Repository 
+        uses: actions/checkout@v4 
 
+      - name: Set up Python 
+        uses: actions/setup-python@v5 
+        with: 
+          python-version: '3.10' 
 
-      - name: Check and Download APKs
-        if: steps.check_version.outputs.new_version_found == 'true' 
-        id: download_step  # <--- MUST match the 'if' below
-        run: python3 scripts/download_apks.py
+      - name: Install Dependencies 
+        run: pip install requests beautifulsoup4 
 
-      - name: Setup Android SDK
-        if: steps.download_step.outputs.new_version_found == 'true'
-        uses: android-actions/setup-android@v3
+      - name: Run Update Script 
+        id: updater # This ID is used by the 'if' conditions below
+        env: 
+          # The API URL must include /repos/ and the $ sign for the variable
+          REPO_API_URL: "https://api.github.com{{ github.repository }}/releases/latest" 
+        run: python scripts/check_magicearth_apks.py 
 
       - name: Verify Signatures
         # Only runs if the Python script found a new version
-        if: steps.download_step.outputs.new_version_found == 'true'
+        if: steps.updater.outputs.new_version_found == 'true'
         run: |
-          # Use the version from Python output if needed
-          export VERSION=${{ steps.download_step.outputs.version }}
           chmod +x scripts/verify_apks.sh
           ./scripts/verify_apks.sh "${{ secrets.MAGICEARTH_CERT_SHA256 }}" "apks/"
 
-      - name: Create Release
-        if: steps.download_step.outputs.new_version_found == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.download_step.outputs.version }}
-          files: apks/*.apk
+      - name: Create GitHub Release 
+        if: steps.updater.outputs.new_version_found == 'true'
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          VERSION: ${{ steps.updater.outputs.version }} 
+        # Using the GitHub CLI (gh) to create the release and upload APKs individually
+        run: |
+          gh release create "$VERSION" ./apks/*.apk \
+            --title "Magic Earth v$VERSION" \
+            --notes "Mirrored from https://www.magicearth.com for use with Obtainium. Verified official ROUTE 66 signature."
