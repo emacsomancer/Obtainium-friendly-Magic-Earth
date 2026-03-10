@@ -2,7 +2,7 @@
 :PROPERTIES:
 :CUSTOM_ID: magic-earth-obtainium-mirror
 :END:
-Automated mirror for [[https://www.magicearth.com/download][*Magic Earth* Android APKs]], verified against the official ROUTE 66 signature. Designed for use with [[https://github.com][Obtainium]].
+Automated mirror for [[https://www.magicearth.com][Magic Earth (maps)]] Android APKs, verified against the official ROUTE 66 signature. Designed for use with [[https://github.com][Obtainium]].
 
 ** How to use with Obtainium
 :PROPERTIES:
@@ -14,9 +14,9 @@ Automated mirror for [[https://www.magicearth.com/download][*Magic Earth* Androi
 4. (maybe) - enable "Verify the 'lastest' tag".
 5. Click *Add*.
 
-** Security
+** Method
 :PROPERTIES:
-:CUSTOM_ID: security
+:CUSTOM_ID: method
 :END:
-Every APK in this repository is automatically verified using =apksigner= against the official Magic Earth SHA-256 certificate fingerprint before being published.
+Every APK in this repository is just copied from [[https://www.magicearth.com/download][Magic Earth's download page]] and then automatically verified using =apksigner= against the official Magic Earth SHA-256 certificate fingerprint before being published.
 
