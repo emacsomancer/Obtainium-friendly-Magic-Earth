@@ -28,7 +28,7 @@ jobs:
         id: updater # This ID is used by the 'if' conditions below
         env: 
           # The API URL must include /repos/ and the $ sign for the variable
-          REPO_API_URL: "https://api.github.com{{ github.repository }}/releases/latest" 
+          REPO_API_URL: "https://api.github.com/repo/${{ github.repository }}/releases/latest" 
         run: python scripts/check_magicearth_apks.py 
 
       - name: Verify Signatures
