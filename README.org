@@ -6,7 +6,7 @@ Automated mirror for [[https://www.magicearth.com][Magic Earth (maps)]] Android 
 
 Designed for use with [[https://obtainium.imranr.dev/][Obtainium]].
 
-New releases are checked for nightly at midnight UTC.
+New releases are checked for hourly.
 
 ** How to use with Obtainium
 :PROPERTIES:
